@@ -10,8 +10,16 @@
       "en": "Utilize remote sensing and artificial intelligence technologies to identify renewable energy infrastructure, such as photovoltaic power plants."
     },
     "keywords": {
-      "zh": "遥感,人工智能,可再生能源基础设施",
-      "en": "Remote sensing,AI,Renewable energy infrastructure"
+      "zh": [
+        "遥感",
+        "人工智能",
+        "可再生能源基础设施"
+      ],
+      "en": [
+        "Remote sensing",
+        "AI",
+        "Renewable energy infrastructure"
+      ]
     }
   },
   {
@@ -25,8 +33,14 @@
       "en": "Assessing the potential and uncertainties of renewable resources"
     },
     "keywords": {
-      "zh": "可再生资源,不确定性",
-      "en": "Renewable resources,Uncertainty"
+      "zh": [
+        "可再生资源",
+        "不确定性"
+      ],
+      "en": [
+        "Renewable resources",
+        "Uncertainty"
+      ]
     }
   },
   {
@@ -40,8 +54,18 @@
       "en": "Ecological and environmental impacts of renewable energy deployment based on remote sensing, artificial intelligence, and big data analysis"
     },
     "keywords": {
-      "zh": "遥感,人工智能,可再生能源,生态环境",
-      "en": "Remote sensing,Artificial intelligence,Renewable energy,Ecological environment"
+      "zh": [
+        "遥感",
+        "人工智能",
+        "可再生能源",
+        "生态环境"
+      ],
+      "en": [
+        "Remote sensing",
+        "Artificial intelligence",
+        "Renewable energy",
+        "Ecological environment"
+      ]
     }
   }
 ]

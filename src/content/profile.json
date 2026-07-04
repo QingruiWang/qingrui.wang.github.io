@@ -3,6 +3,10 @@
     "zh": "王清睿",
     "en": "Qingrui Wang"
   },
+  "title": {
+    "zh": "高校教师 | 能源-环境-AI交叉研究",
+    "en": "Faculty Member | Energy, Environment and AI"
+  },
   "affiliation": {
     "zh": "华中科技大学 环境科学与工程学院",
     "en": "School of Environmental Science and Engineering, Huazhong University of Science and Technology"
@@ -24,8 +28,27 @@
     }
   },
   "bio": {
-    "zh": "我长期关注能源、环境与人工智能交叉领域的问题。研究工作以真实系统中的数据、机理和决策约束为出发点，探索能够服务低碳转型和环境治理的智能方法。当前研究包括能源基础设施数据挖掘、可再生资源评估与不确定性分析、能源系统的环境影响等。欢迎具有能源工程、环境科学、数据科学、人工智能等背景的老师、同学交流。",
-    "en": "My research focuses on the intersection of energy, environment, and artificial intelligence. It begins with data, mechanisms, and decision constraints within real-world systems, exploring intelligent methods to support low-carbon transition and environmental governance. Current research includes energy infrastructure data mining, renewable resource assessment and uncertainty analysis, and the environmental impact of energy systems. I welcome faculty and students with backgrounds in energy engineering, environmental science, data science, and artificial intelligence to engage in discussions."
+    "zh": [
+      "我长期关注能源、环境与人工智能交叉领域的问题。研究工作以真实系统中的数据、机理和决策约束为出发点，探索能够服务低碳转型和环境治理的智能方法。",
+      "当前研究包括能源基础设施数据挖掘、可再生资源评估与不确定性分析、能源系统的环境影响等。欢迎具有能源工程、环境科学、数据科学、人工智能等背景的老师、同学交流。"
+    ],
+    "en": [
+      "My research focuses on the intersection of energy, environment, and artificial intelligence. It begins with data, mechanisms, and decision constraints within real-world systems, exploring intelligent methods to support low-carbon transition and environmental governance.",
+      "Current research includes energy infrastructure data mining, renewable resource assessment and uncertainty analysis, and the environmental impact of energy systems. I welcome faculty and students with backgrounds in energy engineering, environmental science, data science, and artificial intelligence to engage in discussions."
+    ]
   },
-  "links": "[https://scholar.google.com/citations?user=ILh1kAgAAAAJ&hl=zh-CN&oi=ao],[https://orcid.org/0000-0002-0852-0743]"
+  "availability": {
+    "zh": "欢迎本科生、研究生以及跨学科合作伙伴联系交流。",
+    "en": "Students and interdisciplinary collaborators are welcome to get in touch."
+  },
+  "links": [
+    {
+      "label": "Google Scholar",
+      "url": "https://scholar.google.com/citations?user=ILh1kAgAAAAJ&hl=zh-CN&oi=ao"
+    },
+    {
+      "label": "ORCID",
+      "url": "https://orcid.org/0000-0002-0852-0743"
+    }
+  ]
 }

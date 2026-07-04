@@ -6,7 +6,10 @@
       "zh": "期刊论文",
       "en": "Journal Article"
     },
-    "topicIds": "Photovoltaic,Carbon pool,Remote sensing,AI",
+    "topicIds": [
+      "renewable-identification",
+      "renewable-environment"
+    ],
     "title": {
       "zh": "全球集中式光伏电站大规模部署对陆地生态系统碳储量的影响",
       "en": "Increased terrestrial ecosystem carbon storage associated with global utility-scale photovoltaic installation"
@@ -19,11 +22,23 @@
       "zh": "Nature Geoscience",
       "en": "Nature Geoscience"
     },
+    "status": {
+      "zh": "已发表",
+      "en": "Published"
+    },
     "doi": "10.1038/s41561-025-01715-2",
     "url": "#",
     "keywords": {
-      "zh": "光伏,陆地生态系统碳储量,遥感",
-      "en": "Photovoltaics,Carbon storage in terrestrial ecosystems,Remote sensing"
+      "zh": [
+        "光伏",
+        "陆地生态系统碳储量",
+        "遥感"
+      ],
+      "en": [
+        "Photovoltaics",
+        "Terrestrial ecosystem carbon storage",
+        "Remote sensing"
+      ]
     },
     "featured": true
   }

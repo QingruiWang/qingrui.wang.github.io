@@ -1,18 +1,13 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
-import profile from "@content/profile.json";
-import researchAreas from "@content/research.json";
-import publications from "@content/publications.json";
-import projects from "@content/projects.json";
-import teaching from "@content/teaching.json";
-import contact from "@content/contact.json";
+import profileRaw from "@content/profile.json?raw";
+import researchRaw from "@content/research.json?raw";
+import publicationsRaw from "@content/publications.json?raw";
+import projectsRaw from "@content/projects.json?raw";
+import teachingRaw from "@content/teaching.json?raw";
+import contactRaw from "@content/contact.json?raw";
 
 type Lang = "zh" | "en";
-
-interface Localized {
-  zh: string;
-  en: string;
-}
 
 interface Props {
   lang: Lang;
@@ -21,7 +16,50 @@ interface Props {
 const { lang } = Astro.props;
 const otherLang = lang === "zh" ? "en" : "zh";
 const isZh = lang === "zh";
-const t = (value: Localized | string) => (typeof value === "string" ? value : value[lang]);
+
+function parseJson<T>(source: string, fallback: T, label: string): T {
+  const content = source.trim();
+  if (!content) return fallback;
+
+  try {
+    return JSON.parse(content) as T;
+  } catch {
+    console.warn(`Invalid JSON in ${label}; rendering with empty fallback.`);
+    return fallback;
+  }
+}
+
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  Boolean(value) && typeof value === "object" && !Array.isArray(value);
+
+const record = (value: unknown) => (isRecord(value) ? value : {});
+const records = (value: unknown) => (Array.isArray(value) ? value.filter(isRecord) : []);
+
+const text = (value: unknown) => {
+  if (typeof value === "string") return value.trim();
+  if (typeof value === "number" && Number.isFinite(value)) return String(value);
+  return "";
+};
+
+const t = (value: unknown) => {
+  const direct = text(value);
+  if (direct) return direct;
+  if (!isRecord(value)) return "";
+  return text(value[lang]) || text(value[otherLang]);
+};
+
+const stringList = (value: unknown, splitCommas = false) => {
+  if (Array.isArray(value)) return value.map(text).filter(Boolean);
+  const direct = text(value);
+  if (!direct) return [];
+  return splitCommas ? direct.split(/[,，;；\n]/).map((item) => item.trim()).filter(Boolean) : [direct];
+};
+
+const localizedList = (value: unknown, splitCommas = false) => {
+  if (!isRecord(value)) return stringList(value, splitCommas);
+  const current = stringList(value[lang], splitCommas);
+  return current.length > 0 ? current : stringList(value[otherLang], splitCommas);
+};
 
 const copy = {
   zh: {
@@ -78,244 +116,443 @@ const copy = {
   },
 }[lang];
 
-const navAnchors = ["about", "research", "publications", "projects", "teaching", "contact"];
-const sortedPublications = [...publications].sort((a, b) => b.year - a.year);
-const years = [...new Set(sortedPublications.map((publication) => publication.year))];
-const types = [...new Set(sortedPublications.map((publication) => t(publication.type)))];
-const topicMap = new Map(researchAreas.map((area) => [area.id, t(area.theme)]));
-const title = `${t(profile.name)} | ${t(profile.title)}`;
-const description = t(profile.hero.summary);
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
 const withBase = (path: string) => `${basePath}${path}`;
 const langPath = withBase(isZh ? "/en/" : "/");
 const homePath = withBase(isZh ? "/" : "/en/");
-const heroImage = profile.heroImage.startsWith("/") ? withBase(profile.heroImage) : profile.heroImage;
+
+const profile = parseJson<Record<string, unknown>>(profileRaw, {}, "profile.json");
+const hero = record(profile.hero);
+const contact = parseJson<Record<string, unknown>>(contactRaw, {}, "contact.json");
+const teaching = parseJson<Record<string, unknown>>(teachingRaw, {}, "teaching.json");
+
+const name = t(profile.name) || (isZh ? "个人主页" : "Academic Homepage");
+const profileTitle = t(profile.title);
+const affiliation = t(profile.affiliation);
+const heroEyebrow = t(hero.eyebrow);
+const heroHeadline = t(hero.headline) || name;
+const heroSummary = t(hero.summary);
+const bioParagraphs = localizedList(profile.bio);
+const availability = t(profile.availability);
+const rawHeroImage = text(profile.heroImage);
+const heroImage = rawHeroImage ? (rawHeroImage.startsWith("/") ? withBase(rawHeroImage) : rawHeroImage) : "none";
+const heroStyle = heroImage === "none" ? "--hero-image: none" : `--hero-image: url("${heroImage.replaceAll('"', "%22")}")`;
+const profileLinks = records(profile.links)
+  .map((link) => {
+    const url = text(link.url);
+    return { label: text(link.label) || url, url };
+  })
+  .filter((link) => link.label && link.url && link.url !== "#");
+
+const researchAreas = records(parseJson<unknown>(researchRaw, [], "research.json"))
+  .map((area, index) => {
+    const id = text(area.id) || `research-${index + 1}`;
+    const theme = t(area.theme);
+    const summary = t(area.summary);
+    const keywords = localizedList(area.keywords, true);
+    return { id, theme, summary, keywords };
+  })
+  .filter((area) => area.theme || area.summary || area.keywords.length > 0);
+
+const topicMap = new Map(researchAreas.map((area) => [area.id, area.theme || area.id]));
+const topicOptions = researchAreas.filter((area) => area.id && area.theme);
+
+const publicationItems = records(parseJson<unknown>(publicationsRaw, [], "publications.json"))
+  .map((publication) => {
+    const topicIds = stringList(publication.topicIds, true);
+    const topics = topicIds.map((topicId) => topicMap.get(topicId) ?? topicId).filter(Boolean);
+    const keywords = localizedList(publication.keywords, true);
+    const year = text(publication.year);
+    const type = t(publication.type);
+    const title = t(publication.title);
+    const authors = t(publication.authors);
+    const venue = t(publication.venue);
+    const status = t(publication.status);
+    const doi = text(publication.doi);
+    const url = text(publication.url);
+    const searchable = [title, authors, venue, type, status, year, ...keywords, ...topics]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
+
+    return {
+      year,
+      type,
+      topicIds,
+      topics,
+      title,
+      authors,
+      venue,
+      status,
+      doi,
+      url,
+      keywords,
+      featured: Boolean(publication.featured),
+      searchable,
+    };
+  })
+  .filter((publication) =>
+    [
+      publication.year,
+      publication.type,
+      publication.title,
+      publication.authors,
+      publication.venue,
+      publication.status,
+      publication.doi,
+      publication.url && publication.url !== "#",
+      ...publication.keywords,
+      ...publication.topics,
+    ].some(Boolean)
+  );
+
+const sortedPublications = [...publicationItems].sort((a, b) => {
+  const bYear = Number.parseInt(b.year, 10) || 0;
+  const aYear = Number.parseInt(a.year, 10) || 0;
+  return bYear - aYear;
+});
+const years = [...new Set(sortedPublications.map((publication) => publication.year).filter(Boolean))];
+const types = [...new Set(sortedPublications.map((publication) => publication.type).filter(Boolean))];
+
+const projectItems = records(parseJson<unknown>(projectsRaw, [], "projects.json"))
+  .map((project) => ({
+    period: text(project.period),
+    role: t(project.role),
+    title: t(project.title),
+    sponsor: t(project.sponsor),
+    summary: t(project.summary),
+  }))
+  .filter((project) => Object.values(project).some(Boolean));
+
+const courses = records(teaching.courses)
+  .map((course) => ({
+    term: text(course.term),
+    title: t(course.title),
+    level: t(course.level),
+  }))
+  .filter((course) => Object.values(course).some(Boolean));
+const mentoring = t(teaching.mentoring);
+
+const contactEmail = text(contact.email) || text(profile.email);
+const contactOffice = t(contact.office);
+const contactAddress = t(contact.address);
+const contactNote = t(contact.note);
+const hasContactDetails = Boolean(contactEmail || contactOffice || contactAddress);
+
+const hasAbout = Boolean(profileTitle || bioParagraphs.length > 0 || availability || profileLinks.length > 0);
+const hasResearch = researchAreas.length > 0;
+const hasPublications = sortedPublications.length > 0;
+const hasProjects = projectItems.length > 0;
+const hasTeaching = courses.length > 0 || Boolean(mentoring);
+const hasContact = Boolean(contactNote || hasContactDetails);
+
+const navItems = [
+  hasAbout && { anchor: "about", label: copy.nav[0] },
+  hasResearch && { anchor: "research", label: copy.nav[1] },
+  hasPublications && { anchor: "publications", label: copy.nav[2] },
+  hasProjects && { anchor: "projects", label: copy.nav[3] },
+  hasTeaching && { anchor: "teaching", label: copy.nav[4] },
+  hasContact && { anchor: "contact", label: copy.nav[5] },
+].filter(Boolean) as { anchor: string; label: string }[];
+
+const title = [name, profileTitle].filter(Boolean).join(" | ");
+const description = heroSummary || bioParagraphs[0] || title;
 ---
 
 <BaseLayout title={title} description={description} lang={lang}>
   <header class="site-header" data-header>
-    <a class="brand" href={homePath} aria-label={t(profile.name)}>
+    <a class="brand" href={homePath} aria-label={name}>
       <span class="brand-mark" aria-hidden="true">EAI</span>
       <span>
-        <strong>{t(profile.name)}</strong>
-        <small>{t(profile.affiliation)}</small>
+        <strong>{name}</strong>
+        {affiliation && <small>{affiliation}</small>}
       </span>
     </a>
-    <nav class="nav" aria-label={isZh ? "主导航" : "Primary navigation"}>
-      {
-        navAnchors.map((anchor, index) => (
-          <a href={`#${anchor}`}>{copy.nav[index]}</a>
-        ))
-      }
-    </nav>
+    {
+      navItems.length > 0 && (
+        <nav class="nav" aria-label={isZh ? "主导航" : "Primary navigation"}>
+          {navItems.map((item) => <a href={`#${item.anchor}`}>{item.label}</a>)}
+        </nav>
+      )
+    }
     <a class="language-link" href={langPath}>{copy.langSwitch}</a>
   </header>
 
   <main>
-    <section class="hero" style={`--hero-image: url("${heroImage}")`}>
+    <section class="hero" style={heroStyle}>
       <div class="hero-copy">
-        <p class="eyebrow">{t(profile.hero.eyebrow)}</p>
-        <h1>{t(profile.hero.headline)}</h1>
-        <p class="hero-summary">{t(profile.hero.summary)}</p>
-        <div class="hero-actions" aria-label={isZh ? "主要操作" : "Primary actions"}>
-          <a class="button primary" href="#publications">{copy.heroCta}</a>
-          <a class="button secondary" href="#contact">{copy.contactCta}</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="section two-column" id="about">
-      <div class="section-heading">
-        <p class="section-kicker">{t(profile.title)}</p>
-        <h2>{copy.bioTitle}</h2>
-      </div>
-      <div class="content-stack">
-        {profile.bio[lang].map((paragraph) => <p>{paragraph}</p>)}
-        <p class="availability">{t(profile.availability)}</p>
-        <div class="profile-links">
-          {profile.links.map((link) => <a href={link.url}>{link.label}</a>)}
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="research">
-      <div class="section-heading compact">
-        <p class="section-kicker">{t(profile.hero.eyebrow)}</p>
-        <h2>{copy.researchTitle}</h2>
-      </div>
-      <div class="research-grid">
+        {heroEyebrow && <p class="eyebrow">{heroEyebrow}</p>}
+        <h1>{heroHeadline}</h1>
+        {heroSummary && <p class="hero-summary">{heroSummary}</p>}
         {
-          researchAreas.map((area, index) => (
-            <article class="research-card">
-              <span class="index">{String(index + 1).padStart(2, "0")}</span>
-              <h3>{t(area.theme)}</h3>
-              <p>{t(area.summary)}</p>
-              <div class="tag-row">
-                {area.keywords[lang].map((keyword) => <span>{keyword}</span>)}
-              </div>
-            </article>
-          ))
+          (hasPublications || hasContact) && (
+            <div class="hero-actions" aria-label={isZh ? "主要操作" : "Primary actions"}>
+              {hasPublications && <a class="button primary" href="#publications">{copy.heroCta}</a>}
+              {hasContact && <a class="button secondary" href="#contact">{copy.contactCta}</a>}
+            </div>
+          )
         }
       </div>
     </section>
 
-    <section class="section publications-section" id="publications">
-      <div class="section-heading compact">
-        <p class="section-kicker">{isZh ? "Selected and recent work" : "Selected and recent work"}</p>
-        <h2>{copy.publicationsTitle}</h2>
-      </div>
-      <form class="publication-filters" data-publication-filters>
-        <label>
-          <span>{isZh ? "年份" : "Year"}</span>
-          <select name="year">
-            <option value="">{copy.allYears}</option>
-            {years.map((year) => <option value={String(year)}>{year}</option>)}
-          </select>
-        </label>
-        <label>
-          <span>{isZh ? "类型" : "Type"}</span>
-          <select name="type">
-            <option value="">{copy.allTypes}</option>
-            {types.map((type) => <option value={type}>{type}</option>)}
-          </select>
-        </label>
-        <label>
-          <span>{isZh ? "方向" : "Topic"}</span>
-          <select name="topic">
-            <option value="">{copy.allTopics}</option>
-            {researchAreas.map((area) => <option value={area.id}>{t(area.theme)}</option>)}
-          </select>
-        </label>
-        <label class="search-field">
-          <span>{isZh ? "搜索" : "Search"}</span>
-          <input type="search" name="query" placeholder={copy.searchPlaceholder} />
-        </label>
-        <button type="reset">{copy.reset}</button>
-      </form>
-
-      <div class="publication-list" data-publication-list>
-        {
-          sortedPublications.map((publication) => {
-            const topics = publication.topicIds.map((topicId) => topicMap.get(topicId) ?? topicId);
-            const keywords = publication.keywords[lang].join(", ");
-            const searchText = [
-              t(publication.title),
-              t(publication.authors),
-              t(publication.venue),
-              t(publication.type),
-              keywords,
-              topics.join(", "),
-              publication.year,
-            ]
-              .join(" ")
-              .toLowerCase();
-
-            return (
-              <article
-                class="publication-item"
-                data-publication-item
-                data-year={publication.year}
-                data-type={t(publication.type)}
-                data-topics={publication.topicIds.join(" ")}
-                data-search={searchText}
-              >
-                <div class="publication-year">{publication.year}</div>
-                <div class="publication-body">
-                  <div class="publication-meta">
-                    <span>{t(publication.type)}</span>
-                    {publication.featured && <strong>{copy.featured}</strong>}
-                  </div>
-                  <h3>{t(publication.title)}</h3>
-                  <p class="authors">{t(publication.authors)}</p>
-                  <p class="venue">{t(publication.venue)} · {t(publication.status)}</p>
-                  <div class="tag-row">
-                    {topics.map((topic) => <span>{topic}</span>)}
-                    {publication.keywords[lang].map((keyword) => <span>{keyword}</span>)}
-                  </div>
-                  <div class="publication-links">
-                    {publication.doi && <a href={`https://doi.org/${publication.doi}`}>{copy.doi}: {publication.doi}</a>}
-                    {publication.url && publication.url !== "#" && <a href={publication.url}>{copy.link}</a>}
-                  </div>
+    {
+      hasAbout && (
+        <section class="section two-column" id="about">
+          <div class="section-heading">
+            {profileTitle && <p class="section-kicker">{profileTitle}</p>}
+            <h2>{copy.bioTitle}</h2>
+          </div>
+          <div class="content-stack">
+            {bioParagraphs.map((paragraph) => <p>{paragraph}</p>)}
+            {availability && <p class="availability">{availability}</p>}
+            {
+              profileLinks.length > 0 && (
+                <div class="profile-links">
+                  {profileLinks.map((link) => <a href={link.url}>{link.label}</a>)}
                 </div>
+              )
+            }
+          </div>
+        </section>
+      )
+    }
+
+    {
+      hasResearch && (
+        <section class="section" id="research">
+          <div class="section-heading compact">
+            {heroEyebrow && <p class="section-kicker">{heroEyebrow}</p>}
+            <h2>{copy.researchTitle}</h2>
+          </div>
+          <div class="research-grid">
+            {researchAreas.map((area, index) => (
+              <article class="research-card">
+                <span class="index">{String(index + 1).padStart(2, "0")}</span>
+                {area.theme && <h3>{area.theme}</h3>}
+                {area.summary && <p>{area.summary}</p>}
+                {
+                  area.keywords.length > 0 && (
+                    <div class="tag-row">
+                      {area.keywords.map((keyword) => <span>{keyword}</span>)}
+                    </div>
+                  )
+                }
               </article>
-            );
-          })
-        }
-      </div>
-      <p class="empty-state" data-empty-state hidden>{copy.noResult}</p>
-    </section>
+            ))}
+          </div>
+        </section>
+      )
+    }
 
-    <section class="section" id="projects">
-      <div class="section-heading compact">
-        <p class="section-kicker">{isZh ? "Funding and collaboration" : "Funding and collaboration"}</p>
-        <h2>{copy.projectsTitle}</h2>
-      </div>
-      <div class="timeline">
-        {
-          projects.map((project) => (
-            <article class="timeline-item">
-              <div>
-                <span>{project.period}</span>
-                <strong>{t(project.role)}</strong>
-              </div>
-              <div>
-                <h3>{t(project.title)}</h3>
-                <p class="sponsor">{t(project.sponsor)}</p>
-                <p>{t(project.summary)}</p>
-              </div>
-            </article>
-          ))
-        }
-      </div>
-    </section>
+    {
+      hasPublications && (
+        <section class="section publications-section" id="publications">
+          <div class="section-heading compact">
+            <p class="section-kicker">{isZh ? "Selected and recent work" : "Selected and recent work"}</p>
+            <h2>{copy.publicationsTitle}</h2>
+          </div>
+          <form class="publication-filters" data-publication-filters>
+            <label>
+              <span>{isZh ? "年份" : "Year"}</span>
+              <select name="year">
+                <option value="">{copy.allYears}</option>
+                {years.map((year) => <option value={year}>{year}</option>)}
+              </select>
+            </label>
+            <label>
+              <span>{isZh ? "类型" : "Type"}</span>
+              <select name="type">
+                <option value="">{copy.allTypes}</option>
+                {types.map((type) => <option value={type}>{type}</option>)}
+              </select>
+            </label>
+            <label>
+              <span>{isZh ? "方向" : "Topic"}</span>
+              <select name="topic">
+                <option value="">{copy.allTopics}</option>
+                {topicOptions.map((area) => <option value={area.id}>{area.theme}</option>)}
+              </select>
+            </label>
+            <label class="search-field">
+              <span>{isZh ? "搜索" : "Search"}</span>
+              <input type="search" name="query" placeholder={copy.searchPlaceholder} />
+            </label>
+            <button type="reset">{copy.reset}</button>
+          </form>
 
-    <section class="section two-column" id="teaching">
-      <div class="section-heading">
-        <p class="section-kicker">{isZh ? "Courses and supervision" : "Courses and supervision"}</p>
-        <h2>{copy.teachingTitle}</h2>
-      </div>
-      <div class="content-stack">
-        <h3>{copy.courses}</h3>
-        <div class="course-list">
+          <div class="publication-list" data-publication-list>
+            {sortedPublications.map((publication) => {
+              const tags = [...publication.topics, ...publication.keywords];
+              const venueLine = [publication.venue, publication.status].filter(Boolean).join(" · ");
+              const hasMeta = Boolean(publication.type || publication.featured);
+              const hasLinks = Boolean(publication.doi || (publication.url && publication.url !== "#"));
+
+              return (
+                <article
+                  class={`publication-item${publication.year ? "" : " no-year"}`}
+                  data-publication-item
+                  data-year={publication.year}
+                  data-type={publication.type}
+                  data-topics={publication.topicIds.join(" ")}
+                  data-search={publication.searchable}
+                >
+                  {publication.year && <div class="publication-year">{publication.year}</div>}
+                  <div class="publication-body">
+                    {
+                      hasMeta && (
+                        <div class="publication-meta">
+                          {publication.type && <span>{publication.type}</span>}
+                          {publication.featured && <strong>{copy.featured}</strong>}
+                        </div>
+                      )
+                    }
+                    {publication.title && <h3>{publication.title}</h3>}
+                    {publication.authors && <p class="authors">{publication.authors}</p>}
+                    {venueLine && <p class="venue">{venueLine}</p>}
+                    {
+                      tags.length > 0 && (
+                        <div class="tag-row">
+                          {tags.map((tag) => <span>{tag}</span>)}
+                        </div>
+                      )
+                    }
+                    {
+                      hasLinks && (
+                        <div class="publication-links">
+                          {publication.doi && <a href={`https://doi.org/${publication.doi}`}>{copy.doi}: {publication.doi}</a>}
+                          {publication.url && publication.url !== "#" && <a href={publication.url}>{copy.link}</a>}
+                        </div>
+                      )
+                    }
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+          <p class="empty-state" data-empty-state hidden>{copy.noResult}</p>
+        </section>
+      )
+    }
+
+    {
+      hasProjects && (
+        <section class="section" id="projects">
+          <div class="section-heading compact">
+            <p class="section-kicker">{isZh ? "Funding and collaboration" : "Funding and collaboration"}</p>
+            <h2>{copy.projectsTitle}</h2>
+          </div>
+          <div class="timeline">
+            {projectItems.map((project) => {
+              const hasProjectMeta = Boolean(project.period || project.role);
+
+              return (
+                <article class={`timeline-item${hasProjectMeta ? "" : " no-meta"}`}>
+                  {
+                    hasProjectMeta && (
+                      <div>
+                        {project.period && <span>{project.period}</span>}
+                        {project.role && <strong>{project.role}</strong>}
+                      </div>
+                    )
+                  }
+                  <div>
+                    {project.title && <h3>{project.title}</h3>}
+                    {project.sponsor && <p class="sponsor">{project.sponsor}</p>}
+                    {project.summary && <p>{project.summary}</p>}
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+      )
+    }
+
+    {
+      hasTeaching && (
+        <section class="section two-column" id="teaching">
+          <div class="section-heading">
+            <p class="section-kicker">{isZh ? "Courses and supervision" : "Courses and supervision"}</p>
+            <h2>{copy.teachingTitle}</h2>
+          </div>
+          <div class="content-stack">
+            {
+              courses.length > 0 && (
+                <>
+                  <h3>{copy.courses}</h3>
+                  <div class="course-list">
+                    {courses.map((course) => {
+                      const courseMeta = [course.term, course.level].filter(Boolean).join(" · ");
+
+                      return (
+                        <article>
+                          {courseMeta && <span>{courseMeta}</span>}
+                          {course.title && <strong>{course.title}</strong>}
+                        </article>
+                      );
+                    })}
+                  </div>
+                </>
+              )
+            }
+            {
+              mentoring && (
+                <>
+                  <h3>{copy.mentoring}</h3>
+                  <p>{mentoring}</p>
+                </>
+              )
+            }
+          </div>
+        </section>
+      )
+    }
+
+    {
+      hasContact && (
+        <section class="contact-section" id="contact">
+          <div>
+            <p class="section-kicker">{isZh ? "Contact" : "Contact"}</p>
+            <h2>{copy.contactTitle}</h2>
+            {contactNote && <p>{contactNote}</p>}
+          </div>
           {
-            teaching.courses.map((course) => (
-              <article>
-                <span>{course.term} · {t(course.level)}</span>
-                <strong>{t(course.title)}</strong>
-              </article>
-            ))
+            hasContactDetails && (
+              <dl class="contact-list">
+                {
+                  contactEmail && (
+                    <div>
+                      <dt>{copy.email}</dt>
+                      <dd><a href={`mailto:${contactEmail}`}>{contactEmail}</a></dd>
+                    </div>
+                  )
+                }
+                {
+                  contactOffice && (
+                    <div>
+                      <dt>{copy.office}</dt>
+                      <dd>{contactOffice}</dd>
+                    </div>
+                  )
+                }
+                {
+                  contactAddress && (
+                    <div>
+                      <dt>{copy.address}</dt>
+                      <dd>{contactAddress}</dd>
+                    </div>
+                  )
+                }
+              </dl>
+            )
           }
-        </div>
-        <h3>{copy.mentoring}</h3>
-        <p>{t(teaching.mentoring)}</p>
-      </div>
-    </section>
-
-    <section class="contact-section" id="contact">
-      <div>
-        <p class="section-kicker">{isZh ? "Contact" : "Contact"}</p>
-        <h2>{copy.contactTitle}</h2>
-        <p>{t(contact.note)}</p>
-      </div>
-      <dl class="contact-list">
-        <div>
-          <dt>{copy.email}</dt>
-          <dd><a href={`mailto:${contact.email}`}>{contact.email}</a></dd>
-        </div>
-        <div>
-          <dt>{copy.office}</dt>
-          <dd>{t(contact.office)}</dd>
-        </div>
-        <div>
-          <dt>{copy.address}</dt>
-          <dd>{t(contact.address)}</dd>
-        </div>
-      </dl>
-    </section>
+        </section>
+      )
+    }
   </main>
 
   <footer class="site-footer">
-    <span>© {new Date().getFullYear()} {t(profile.name)}</span>
+    <span>© {new Date().getFullYear()} {name}</span>
     <span>{isZh ? "由 Astro 与 GitHub Pages 构建" : "Built with Astro and GitHub Pages"}</span>
   </footer>
 

@@ -1,130 +1,30 @@
 [
   {
-    "id": "energy-ai-2026",
-    "year": 2026,
-    "type": {
-      "zh": "期刊论文",
-      "en": "Journal Article"
-    },
-    "topicIds": ["energy-ai", "trustworthy-ai"],
-    "title": {
-      "zh": "面向城市综合能源系统的物理约束机器学习优化框架",
-      "en": "A Physics-Constrained Machine Learning Framework for Urban Integrated Energy Systems"
-    },
-    "authors": {
-      "zh": "您的姓名*, 合作者 A, 合作者 B",
-      "en": "Your Name*, Collaborator A, Collaborator B"
-    },
-    "venue": {
-      "zh": "Applied Energy",
-      "en": "Applied Energy"
-    },
-    "status": {
-      "zh": "模板条目",
-      "en": "Template entry"
-    },
-    "doi": "10.0000/example.2026.001",
-    "url": "#",
-    "keywords": {
-      "zh": ["能源系统", "机器学习", "优化"],
-      "en": ["Energy systems", "Machine learning", "Optimization"]
-    },
-    "featured": true
-  },
-  {
-    "id": "environment-ai-2025",
+    "id": "pv-carbon",
     "year": 2025,
     "type": {
       "zh": "期刊论文",
       "en": "Journal Article"
     },
-    "topicIds": ["environment-sensing", "trustworthy-ai"],
+    "topicIds": "Photovoltaic,Carbon pool,Remote sensing,AI",
     "title": {
-      "zh": "融合遥感与地面观测的城市空气质量时空预测方法",
-      "en": "Urban Air Quality Forecasting with Remote Sensing and Ground Observations"
+      "zh": "全球集中式光伏电站大规模部署对陆地生态系统碳储量的影响",
+      "en": "Increased terrestrial ecosystem carbon storage associated with global utility-scale photovoltaic installation"
     },
     "authors": {
-      "zh": "合作者 C, 您的姓名*, 合作者 D",
-      "en": "Collaborator C, Your Name*, Collaborator D"
+      "zh": "Qingrui Wang; Kai Wang; Lintao Shao; Xinyi Tang; Shuchang Tang; Ondřej Mašek; Gesa Meyer; Jan Kleissl; Liwei Zhang; Mudan Wang; Weisheng Wang; Qing Yang; Stephen Sitch",
+      "en": "Qingrui Wang; Kai Wang; Lintao Shao; Xinyi Tang; Shuchang Tang; Ondřej Mašek; Gesa Meyer; Jan Kleissl; Liwei Zhang; Mudan Wang; Weisheng Wang; Qing Yang; Stephen Sitch"
     },
     "venue": {
-      "zh": "Environmental Science & Technology",
-      "en": "Environmental Science & Technology"
+      "zh": "Nature Geoscience",
+      "en": "Nature Geoscience"
     },
-    "status": {
-      "zh": "模板条目",
-      "en": "Template entry"
-    },
-    "doi": "10.0000/example.2025.002",
+    "doi": "10.1038/s41561-025-01715-2",
     "url": "#",
     "keywords": {
-      "zh": ["空气质量", "遥感", "时空预测"],
-      "en": ["Air quality", "Remote sensing", "Spatiotemporal forecasting"]
+      "zh": "光伏,陆地生态系统碳储量,遥感",
+      "en": "Photovoltaics,Carbon storage in terrestrial ecosystems,Remote sensing"
     },
     "featured": true
-  },
-  {
-    "id": "carbon-policy-2024",
-    "year": 2024,
-    "type": {
-      "zh": "会议论文",
-      "en": "Conference Paper"
-    },
-    "topicIds": ["energy-ai", "environment-sensing"],
-    "title": {
-      "zh": "面向碳中和政策评估的能源-环境耦合模拟",
-      "en": "Coupled Energy-Environment Simulation for Carbon-Neutrality Policy Assessment"
-    },
-    "authors": {
-      "zh": "您的姓名, 合作者 E",
-      "en": "Your Name, Collaborator E"
-    },
-    "venue": {
-      "zh": "International Conference on Sustainable Energy Systems",
-      "en": "International Conference on Sustainable Energy Systems"
-    },
-    "status": {
-      "zh": "模板条目",
-      "en": "Template entry"
-    },
-    "doi": "",
-    "url": "#",
-    "keywords": {
-      "zh": ["碳中和", "政策评估", "系统模拟"],
-      "en": ["Carbon neutrality", "Policy assessment", "System simulation"]
-    },
-    "featured": false
-  },
-  {
-    "id": "demand-response-2023",
-    "year": 2023,
-    "type": {
-      "zh": "期刊论文",
-      "en": "Journal Article"
-    },
-    "topicIds": ["energy-ai"],
-    "title": {
-      "zh": "考虑用户行为不确定性的需求响应调度策略",
-      "en": "Demand Response Scheduling under User Behavior Uncertainty"
-    },
-    "authors": {
-      "zh": "合作者 F, 您的姓名, 合作者 G*",
-      "en": "Collaborator F, Your Name, Collaborator G*"
-    },
-    "venue": {
-      "zh": "Energy",
-      "en": "Energy"
-    },
-    "status": {
-      "zh": "模板条目",
-      "en": "Template entry"
-    },
-    "doi": "10.0000/example.2023.004",
-    "url": "#",
-    "keywords": {
-      "zh": ["需求响应", "不确定性", "用户行为"],
-      "en": ["Demand response", "Uncertainty", "User behavior"]
-    },
-    "featured": false
   }
 ]

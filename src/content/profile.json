@@ -1,67 +1,31 @@
 {
   "name": {
-    "zh": "您的姓名",
-    "en": "Your Name"
-  },
-  "title": {
-    "zh": "高校教师 | 能源-环境-AI交叉研究",
-    "en": "Faculty Member | Energy, Environment and AI"
+    "zh": "王清睿",
+    "en": "Qingrui Wang"
   },
   "affiliation": {
-    "zh": "某某大学 某某学院",
-    "en": "School of Example, Example University"
+    "zh": "华中科技大学 环境科学与工程学院",
+    "en": "School of Environmental Science and Engineering, Huazhong University of Science and Technology"
   },
-  "location": {
-    "zh": "中国",
-    "en": "China"
-  },
-  "email": "your.name@university.edu",
+  "email": "wangqr@hust.edu.cn",
   "heroImage": "/media/hero-research.png",
-  "avatar": "",
-  "links": [
-    {
-      "label": "Google Scholar",
-      "url": "#"
-    },
-    {
-      "label": "ORCID",
-      "url": "#"
-    },
-    {
-      "label": "ResearchGate",
-      "url": "#"
-    },
-    {
-      "label": "GitHub",
-      "url": "#"
-    }
-  ],
   "hero": {
     "eyebrow": {
       "zh": "能源 · 环境 · 人工智能",
       "en": "Energy · Environment · Artificial Intelligence"
     },
     "headline": {
-      "zh": "智能能源与环境系统研究",
-      "en": "Intelligent Energy and Environmental Systems"
+      "zh": "能源与环境可持续发展",
+      "en": "Energy, Environment, and Sustainability"
     },
     "summary": {
-      "zh": "面向低碳转型，我的研究关注能源系统优化、环境数据智能分析与可信人工智能方法，旨在为低碳城市、清洁能源和可持续基础设施提供可解释、可部署的计算工具。",
-      "en": "For low-carbon transitions, my research integrates energy systems optimization, environmental data intelligence and trustworthy AI to build interpretable, deployable tools for clean energy and sustainable infrastructure."
+      "zh": "面向低碳转型，我的研究关注能源系统优化、环境数据智能分析与可信人工智能方法，旨在为低碳城市、清洁能源和可持续发展提供可信的数据基础与评估方法。",
+      "en": "Towards a low-carbon transition, my research focuses on energy system optimization, intelligent analysis of environmental data, and credible artificial intelligence methods, aiming to provide a reliable data foundation and assessment methods for low-carbon cities, clean energy, and sustainable development."
     }
   },
   "bio": {
-    "zh": [
-      "我是一名高校教师，长期关注能源、环境与人工智能交叉领域的问题。研究工作以真实系统中的数据、机理和决策约束为出发点，探索能够服务低碳转型和环境治理的智能方法。",
-      "当前研究包括多能源系统建模与优化、环境感知数据挖掘、时空预测、可信机器学习以及面向政策和工程应用的智能决策支持。欢迎具有能源工程、环境科学、数据科学、人工智能等背景的学生和合作伙伴交流。"
-    ],
-    "en": [
-      "I am a faculty member working at the intersection of energy, environment and artificial intelligence. My research starts from real-world data, physical mechanisms and decision constraints, with the goal of supporting low-carbon transitions and environmental governance.",
-      "Current topics include multi-energy system modeling and optimization, environmental sensing analytics, spatiotemporal forecasting, trustworthy machine learning and intelligent decision support for policy and engineering applications."
-    ]
+    "zh": "我长期关注能源、环境与人工智能交叉领域的问题。研究工作以真实系统中的数据、机理和决策约束为出发点，探索能够服务低碳转型和环境治理的智能方法。当前研究包括能源基础设施数据挖掘、可再生资源评估与不确定性分析、能源系统的环境影响等。欢迎具有能源工程、环境科学、数据科学、人工智能等背景的老师、同学交流。",
+    "en": "My research focuses on the intersection of energy, environment, and artificial intelligence. It begins with data, mechanisms, and decision constraints within real-world systems, exploring intelligent methods to support low-carbon transition and environmental governance. Current research includes energy infrastructure data mining, renewable resource assessment and uncertainty analysis, and the environmental impact of energy systems. I welcome faculty and students with backgrounds in energy engineering, environmental science, data science, and artificial intelligence to engage in discussions."
   },
-  "availability": {
-    "zh": "欢迎本科生、研究生以及跨学科合作伙伴联系交流。",
-    "en": "Students and interdisciplinary collaborators are welcome to get in touch."
-  }
+  "links": "[https://scholar.google.com/citations?user=ILh1kAgAAAAJ&hl=zh-CN&oi=ao],[https://orcid.org/0000-0002-0852-0743]"
 }

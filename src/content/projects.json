@@ -1,0 +1,40 @@
+[
+  {
+    "period": "2025-2028",
+    "role": {
+      "zh": "项目负责人",
+      "en": "Principal Investigator"
+    },
+    "title": {
+      "zh": "面向低碳城市的能源-环境智能决策方法",
+      "en": "AI-Enabled Energy-Environment Decision Support for Low-Carbon Cities"
+    },
+    "sponsor": {
+      "zh": "国家级/省部级科研项目模板",
+      "en": "National or provincial research grant template"
+    },
+    "summary": {
+      "zh": "构建城市尺度能源与环境数据融合、预测和优化方法，服务低碳规划与精细化治理。",
+      "en": "Developing urban-scale data fusion, forecasting and optimization methods for low-carbon planning and fine-grained governance."
+    }
+  },
+  {
+    "period": "2024-2026",
+    "role": {
+      "zh": "骨干成员",
+      "en": "Core Member"
+    },
+    "title": {
+      "zh": "新能源消纳与综合能源系统协同优化",
+      "en": "Co-Optimization of Renewable Integration and Integrated Energy Systems"
+    },
+    "sponsor": {
+      "zh": "横向/合作项目模板",
+      "en": "Industry or collaborative project template"
+    },
+    "summary": {
+      "zh": "研究多能互补、储能配置与需求响应策略，提升可再生能源利用效率。",
+      "en": "Studying multi-energy complementarity, storage planning and demand response to improve renewable energy utilization."
+    }
+  }
+]

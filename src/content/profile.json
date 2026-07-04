@@ -1,0 +1,67 @@
+{
+  "name": {
+    "zh": "您的姓名",
+    "en": "Your Name"
+  },
+  "title": {
+    "zh": "高校教师 | 能源-环境-AI交叉研究",
+    "en": "Faculty Member | Energy, Environment and AI"
+  },
+  "affiliation": {
+    "zh": "某某大学 某某学院",
+    "en": "School of Example, Example University"
+  },
+  "location": {
+    "zh": "中国",
+    "en": "China"
+  },
+  "email": "your.name@university.edu",
+  "heroImage": "/media/hero-research.png",
+  "avatar": "",
+  "links": [
+    {
+      "label": "Google Scholar",
+      "url": "#"
+    },
+    {
+      "label": "ORCID",
+      "url": "#"
+    },
+    {
+      "label": "ResearchGate",
+      "url": "#"
+    },
+    {
+      "label": "GitHub",
+      "url": "#"
+    }
+  ],
+  "hero": {
+    "eyebrow": {
+      "zh": "能源 · 环境 · 人工智能",
+      "en": "Energy · Environment · Artificial Intelligence"
+    },
+    "headline": {
+      "zh": "智能能源与环境系统研究",
+      "en": "Intelligent Energy and Environmental Systems"
+    },
+    "summary": {
+      "zh": "面向低碳转型，我的研究关注能源系统优化、环境数据智能分析与可信人工智能方法，旨在为低碳城市、清洁能源和可持续基础设施提供可解释、可部署的计算工具。",
+      "en": "For low-carbon transitions, my research integrates energy systems optimization, environmental data intelligence and trustworthy AI to build interpretable, deployable tools for clean energy and sustainable infrastructure."
+    }
+  },
+  "bio": {
+    "zh": [
+      "我是一名高校教师，长期关注能源、环境与人工智能交叉领域的问题。研究工作以真实系统中的数据、机理和决策约束为出发点，探索能够服务低碳转型和环境治理的智能方法。",
+      "当前研究包括多能源系统建模与优化、环境感知数据挖掘、时空预测、可信机器学习以及面向政策和工程应用的智能决策支持。欢迎具有能源工程、环境科学、数据科学、人工智能等背景的学生和合作伙伴交流。"
+    ],
+    "en": [
+      "I am a faculty member working at the intersection of energy, environment and artificial intelligence. My research starts from real-world data, physical mechanisms and decision constraints, with the goal of supporting low-carbon transitions and environmental governance.",
+      "Current topics include multi-energy system modeling and optimization, environmental sensing analytics, spatiotemporal forecasting, trustworthy machine learning and intelligent decision support for policy and engineering applications."
+    ]
+  },
+  "availability": {
+    "zh": "欢迎本科生、研究生以及跨学科合作伙伴联系交流。",
+    "en": "Students and interdisciplinary collaborators are welcome to get in touch."
+  }
+}

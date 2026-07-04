@@ -1,0 +1,355 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import profile from "@content/profile.json";
+import researchAreas from "@content/research.json";
+import publications from "@content/publications.json";
+import projects from "@content/projects.json";
+import teaching from "@content/teaching.json";
+import contact from "@content/contact.json";
+
+type Lang = "zh" | "en";
+
+interface Localized {
+  zh: string;
+  en: string;
+}
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const otherLang = lang === "zh" ? "en" : "zh";
+const isZh = lang === "zh";
+const t = (value: Localized | string) => (typeof value === "string" ? value : value[lang]);
+
+const copy = {
+  zh: {
+    nav: ["简介", "研究", "论文", "项目", "教学", "联系"],
+    langSwitch: "English",
+    heroCta: "查看论文",
+    contactCta: "联系交流",
+    bioTitle: "个人简介",
+    researchTitle: "研究方向",
+    publicationsTitle: "发表论文",
+    projectsTitle: "项目与基金",
+    teachingTitle: "教学与指导",
+    contactTitle: "联系方式",
+    allYears: "全部年份",
+    allTypes: "全部类型",
+    allTopics: "全部方向",
+    searchPlaceholder: "搜索标题、作者、期刊或关键词",
+    noResult: "没有找到匹配的论文。",
+    doi: "DOI",
+    link: "链接",
+    featured: "代表作",
+    reset: "重置筛选",
+    courses: "课程",
+    mentoring: "学生指导",
+    email: "邮箱",
+    office: "办公室",
+    address: "地址",
+  },
+  en: {
+    nav: ["About", "Research", "Publications", "Projects", "Teaching", "Contact"],
+    langSwitch: "中文",
+    heroCta: "View publications",
+    contactCta: "Get in touch",
+    bioTitle: "About",
+    researchTitle: "Research",
+    publicationsTitle: "Publications",
+    projectsTitle: "Projects and Grants",
+    teachingTitle: "Teaching and Mentoring",
+    contactTitle: "Contact",
+    allYears: "All years",
+    allTypes: "All types",
+    allTopics: "All topics",
+    searchPlaceholder: "Search title, authors, venue or keywords",
+    noResult: "No publications match the current filters.",
+    doi: "DOI",
+    link: "Link",
+    featured: "Selected",
+    reset: "Reset filters",
+    courses: "Courses",
+    mentoring: "Mentoring",
+    email: "Email",
+    office: "Office",
+    address: "Address",
+  },
+}[lang];
+
+const navAnchors = ["about", "research", "publications", "projects", "teaching", "contact"];
+const sortedPublications = [...publications].sort((a, b) => b.year - a.year);
+const years = [...new Set(sortedPublications.map((publication) => publication.year))];
+const types = [...new Set(sortedPublications.map((publication) => t(publication.type)))];
+const topicMap = new Map(researchAreas.map((area) => [area.id, t(area.theme)]));
+const title = `${t(profile.name)} | ${t(profile.title)}`;
+const description = t(profile.hero.summary);
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+const withBase = (path: string) => `${basePath}${path}`;
+const langPath = withBase(isZh ? "/en/" : "/");
+const homePath = withBase(isZh ? "/" : "/en/");
+const heroImage = profile.heroImage.startsWith("/") ? withBase(profile.heroImage) : profile.heroImage;
+---
+
+<BaseLayout title={title} description={description} lang={lang}>
+  <header class="site-header" data-header>
+    <a class="brand" href={homePath} aria-label={t(profile.name)}>
+      <span class="brand-mark" aria-hidden="true">EAI</span>
+      <span>
+        <strong>{t(profile.name)}</strong>
+        <small>{t(profile.affiliation)}</small>
+      </span>
+    </a>
+    <nav class="nav" aria-label={isZh ? "主导航" : "Primary navigation"}>
+      {
+        navAnchors.map((anchor, index) => (
+          <a href={`#${anchor}`}>{copy.nav[index]}</a>
+        ))
+      }
+    </nav>
+    <a class="language-link" href={langPath}>{copy.langSwitch}</a>
+  </header>
+
+  <main>
+    <section class="hero" style={`--hero-image: url("${heroImage}")`}>
+      <div class="hero-copy">
+        <p class="eyebrow">{t(profile.hero.eyebrow)}</p>
+        <h1>{t(profile.hero.headline)}</h1>
+        <p class="hero-summary">{t(profile.hero.summary)}</p>
+        <div class="hero-actions" aria-label={isZh ? "主要操作" : "Primary actions"}>
+          <a class="button primary" href="#publications">{copy.heroCta}</a>
+          <a class="button secondary" href="#contact">{copy.contactCta}</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section two-column" id="about">
+      <div class="section-heading">
+        <p class="section-kicker">{t(profile.title)}</p>
+        <h2>{copy.bioTitle}</h2>
+      </div>
+      <div class="content-stack">
+        {profile.bio[lang].map((paragraph) => <p>{paragraph}</p>)}
+        <p class="availability">{t(profile.availability)}</p>
+        <div class="profile-links">
+          {profile.links.map((link) => <a href={link.url}>{link.label}</a>)}
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="research">
+      <div class="section-heading compact">
+        <p class="section-kicker">{t(profile.hero.eyebrow)}</p>
+        <h2>{copy.researchTitle}</h2>
+      </div>
+      <div class="research-grid">
+        {
+          researchAreas.map((area, index) => (
+            <article class="research-card">
+              <span class="index">{String(index + 1).padStart(2, "0")}</span>
+              <h3>{t(area.theme)}</h3>
+              <p>{t(area.summary)}</p>
+              <div class="tag-row">
+                {area.keywords[lang].map((keyword) => <span>{keyword}</span>)}
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="section publications-section" id="publications">
+      <div class="section-heading compact">
+        <p class="section-kicker">{isZh ? "Selected and recent work" : "Selected and recent work"}</p>
+        <h2>{copy.publicationsTitle}</h2>
+      </div>
+      <form class="publication-filters" data-publication-filters>
+        <label>
+          <span>{isZh ? "年份" : "Year"}</span>
+          <select name="year">
+            <option value="">{copy.allYears}</option>
+            {years.map((year) => <option value={String(year)}>{year}</option>)}
+          </select>
+        </label>
+        <label>
+          <span>{isZh ? "类型" : "Type"}</span>
+          <select name="type">
+            <option value="">{copy.allTypes}</option>
+            {types.map((type) => <option value={type}>{type}</option>)}
+          </select>
+        </label>
+        <label>
+          <span>{isZh ? "方向" : "Topic"}</span>
+          <select name="topic">
+            <option value="">{copy.allTopics}</option>
+            {researchAreas.map((area) => <option value={area.id}>{t(area.theme)}</option>)}
+          </select>
+        </label>
+        <label class="search-field">
+          <span>{isZh ? "搜索" : "Search"}</span>
+          <input type="search" name="query" placeholder={copy.searchPlaceholder} />
+        </label>
+        <button type="reset">{copy.reset}</button>
+      </form>
+
+      <div class="publication-list" data-publication-list>
+        {
+          sortedPublications.map((publication) => {
+            const topics = publication.topicIds.map((topicId) => topicMap.get(topicId) ?? topicId);
+            const keywords = publication.keywords[lang].join(", ");
+            const searchText = [
+              t(publication.title),
+              t(publication.authors),
+              t(publication.venue),
+              t(publication.type),
+              keywords,
+              topics.join(", "),
+              publication.year,
+            ]
+              .join(" ")
+              .toLowerCase();
+
+            return (
+              <article
+                class="publication-item"
+                data-publication-item
+                data-year={publication.year}
+                data-type={t(publication.type)}
+                data-topics={publication.topicIds.join(" ")}
+                data-search={searchText}
+              >
+                <div class="publication-year">{publication.year}</div>
+                <div class="publication-body">
+                  <div class="publication-meta">
+                    <span>{t(publication.type)}</span>
+                    {publication.featured && <strong>{copy.featured}</strong>}
+                  </div>
+                  <h3>{t(publication.title)}</h3>
+                  <p class="authors">{t(publication.authors)}</p>
+                  <p class="venue">{t(publication.venue)} · {t(publication.status)}</p>
+                  <div class="tag-row">
+                    {topics.map((topic) => <span>{topic}</span>)}
+                    {publication.keywords[lang].map((keyword) => <span>{keyword}</span>)}
+                  </div>
+                  <div class="publication-links">
+                    {publication.doi && <a href={`https://doi.org/${publication.doi}`}>{copy.doi}: {publication.doi}</a>}
+                    {publication.url && publication.url !== "#" && <a href={publication.url}>{copy.link}</a>}
+                  </div>
+                </div>
+              </article>
+            );
+          })
+        }
+      </div>
+      <p class="empty-state" data-empty-state hidden>{copy.noResult}</p>
+    </section>
+
+    <section class="section" id="projects">
+      <div class="section-heading compact">
+        <p class="section-kicker">{isZh ? "Funding and collaboration" : "Funding and collaboration"}</p>
+        <h2>{copy.projectsTitle}</h2>
+      </div>
+      <div class="timeline">
+        {
+          projects.map((project) => (
+            <article class="timeline-item">
+              <div>
+                <span>{project.period}</span>
+                <strong>{t(project.role)}</strong>
+              </div>
+              <div>
+                <h3>{t(project.title)}</h3>
+                <p class="sponsor">{t(project.sponsor)}</p>
+                <p>{t(project.summary)}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="section two-column" id="teaching">
+      <div class="section-heading">
+        <p class="section-kicker">{isZh ? "Courses and supervision" : "Courses and supervision"}</p>
+        <h2>{copy.teachingTitle}</h2>
+      </div>
+      <div class="content-stack">
+        <h3>{copy.courses}</h3>
+        <div class="course-list">
+          {
+            teaching.courses.map((course) => (
+              <article>
+                <span>{course.term} · {t(course.level)}</span>
+                <strong>{t(course.title)}</strong>
+              </article>
+            ))
+          }
+        </div>
+        <h3>{copy.mentoring}</h3>
+        <p>{t(teaching.mentoring)}</p>
+      </div>
+    </section>
+
+    <section class="contact-section" id="contact">
+      <div>
+        <p class="section-kicker">{isZh ? "Contact" : "Contact"}</p>
+        <h2>{copy.contactTitle}</h2>
+        <p>{t(contact.note)}</p>
+      </div>
+      <dl class="contact-list">
+        <div>
+          <dt>{copy.email}</dt>
+          <dd><a href={`mailto:${contact.email}`}>{contact.email}</a></dd>
+        </div>
+        <div>
+          <dt>{copy.office}</dt>
+          <dd>{t(contact.office)}</dd>
+        </div>
+        <div>
+          <dt>{copy.address}</dt>
+          <dd>{t(contact.address)}</dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>© {new Date().getFullYear()} {t(profile.name)}</span>
+    <span>{isZh ? "由 Astro 与 GitHub Pages 构建" : "Built with Astro and GitHub Pages"}</span>
+  </footer>
+
+  <script>
+    const filters = document.querySelector("[data-publication-filters]");
+    const items = Array.from(document.querySelectorAll("[data-publication-item]"));
+    const emptyState = document.querySelector("[data-empty-state]");
+
+    function applyPublicationFilters() {
+      if (!(filters instanceof HTMLFormElement)) return;
+      const formData = new FormData(filters);
+      const year = String(formData.get("year") || "");
+      const type = String(formData.get("type") || "");
+      const topic = String(formData.get("topic") || "");
+      const query = String(formData.get("query") || "").trim().toLowerCase();
+      let visibleCount = 0;
+
+      items.forEach((item) => {
+        if (!(item instanceof HTMLElement)) return;
+        const matchesYear = !year || item.dataset.year === year;
+        const matchesType = !type || item.dataset.type === type;
+        const matchesTopic = !topic || (item.dataset.topics || "").split(" ").includes(topic);
+        const matchesQuery = !query || (item.dataset.search || "").includes(query);
+        const isVisible = matchesYear && matchesType && matchesTopic && matchesQuery;
+        item.hidden = !isVisible;
+        if (isVisible) visibleCount += 1;
+      });
+
+      if (emptyState instanceof HTMLElement) {
+        emptyState.hidden = visibleCount > 0;
+      }
+    }
+
+    filters?.addEventListener("input", applyPublicationFilters);
+    filters?.addEventListener("reset", () => window.setTimeout(applyPublicationFilters, 0));
+  </script>
+</BaseLayout>

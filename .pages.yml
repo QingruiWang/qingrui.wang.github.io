@@ -1,0 +1,231 @@
+media:
+  input: public/media
+  output: /media
+
+content:
+  - name: profile
+    label: Profile
+    type: file
+    path: src/content/profile.json
+    format: json
+    fields:
+      - name: name
+        label: Name
+        type: object
+        fields:
+          - { name: zh, label: 中文, type: string }
+          - { name: en, label: English, type: string }
+      - name: title
+        label: Title
+        type: object
+        fields:
+          - { name: zh, label: 中文, type: string }
+          - { name: en, label: English, type: string }
+      - name: affiliation
+        label: Affiliation
+        type: object
+        fields:
+          - { name: zh, label: 中文, type: string }
+          - { name: en, label: English, type: string }
+      - { name: email, label: Email, type: string }
+      - { name: heroImage, label: Hero image, type: image }
+      - name: hero
+        label: Hero
+        type: object
+        fields:
+          - name: eyebrow
+            label: Eyebrow
+            type: object
+            fields:
+              - { name: zh, label: 中文, type: string }
+              - { name: en, label: English, type: string }
+          - name: headline
+            label: Headline
+            type: object
+            fields:
+              - { name: zh, label: 中文, type: text }
+              - { name: en, label: English, type: text }
+          - name: summary
+            label: Summary
+            type: object
+            fields:
+              - { name: zh, label: 中文, type: text }
+              - { name: en, label: English, type: text }
+      - name: bio
+        label: Biography
+        type: object
+        fields:
+          - { name: zh, label: 中文段落, type: list, field: { type: text } }
+          - { name: en, label: English paragraphs, type: list, field: { type: text } }
+      - name: links
+        label: Academic links
+        type: list
+        fields:
+          - { name: label, label: Label, type: string }
+          - { name: url, label: URL, type: string }
+
+  - name: research
+    label: Research Areas
+    type: file
+    path: src/content/research.json
+    format: json
+    list: true
+    fields:
+      - { name: id, label: ID, type: string }
+      - name: theme
+        label: Theme
+        type: object
+        fields:
+          - { name: zh, label: 中文, type: string }
+          - { name: en, label: English, type: string }
+      - name: summary
+        label: Summary
+        type: object
+        fields:
+          - { name: zh, label: 中文, type: text }
+          - { name: en, label: English, type: text }
+      - name: keywords
+        label: Keywords
+        type: object
+        fields:
+          - { name: zh, label: 中文关键词, type: list, field: { type: string } }
+          - { name: en, label: English keywords, type: list, field: { type: string } }
+
+  - name: publications
+    label: Publications
+    type: file
+    path: src/content/publications.json
+    format: json
+    list: true
+    fields:
+      - { name: id, label: ID, type: string }
+      - { name: year, label: Year, type: number }
+      - name: type
+        label: Type
+        type: object
+        fields:
+          - { name: zh, label: 中文, type: string }
+          - { name: en, label: English, type: string }
+      - { name: topicIds, label: Research topic IDs, type: list, field: { type: string } }
+      - name: title
+        label: Title
+        type: object
+        fields:
+          - { name: zh, label: 中文, type: text }
+          - { name: en, label: English, type: text }
+      - name: authors
+        label: Authors
+        type: object
+        fields:
+          - { name: zh, label: 中文, type: string }
+          - { name: en, label: English, type: string }
+      - name: venue
+        label: Venue
+        type: object
+        fields:
+          - { name: zh, label: 中文, type: string }
+          - { name: en, label: English, type: string }
+      - name: status
+        label: Status
+        type: object
+        fields:
+          - { name: zh, label: 中文, type: string }
+          - { name: en, label: English, type: string }
+      - { name: doi, label: DOI, type: string, required: false }
+      - { name: url, label: URL, type: string, required: false }
+      - name: keywords
+        label: Keywords
+        type: object
+        fields:
+          - { name: zh, label: 中文关键词, type: list, field: { type: string } }
+          - { name: en, label: English keywords, type: list, field: { type: string } }
+      - { name: featured, label: Featured, type: boolean }
+
+  - name: projects
+    label: Projects
+    type: file
+    path: src/content/projects.json
+    format: json
+    list: true
+    fields:
+      - { name: period, label: Period, type: string }
+      - name: role
+        label: Role
+        type: object
+        fields:
+          - { name: zh, label: 中文, type: string }
+          - { name: en, label: English, type: string }
+      - name: title
+        label: Title
+        type: object
+        fields:
+          - { name: zh, label: 中文, type: string }
+          - { name: en, label: English, type: string }
+      - name: sponsor
+        label: Sponsor
+        type: object
+        fields:
+          - { name: zh, label: 中文, type: string }
+          - { name: en, label: English, type: string }
+      - name: summary
+        label: Summary
+        type: object
+        fields:
+          - { name: zh, label: 中文, type: text }
+          - { name: en, label: English, type: text }
+
+  - name: teaching
+    label: Teaching
+    type: file
+    path: src/content/teaching.json
+    format: json
+    fields:
+      - name: courses
+        label: Courses
+        type: list
+        fields:
+          - { name: term, label: Term, type: string }
+          - name: title
+            label: Title
+            type: object
+            fields:
+              - { name: zh, label: 中文, type: string }
+              - { name: en, label: English, type: string }
+          - name: level
+            label: Level
+            type: object
+            fields:
+              - { name: zh, label: 中文, type: string }
+              - { name: en, label: English, type: string }
+      - name: mentoring
+        label: Mentoring
+        type: object
+        fields:
+          - { name: zh, label: 中文, type: text }
+          - { name: en, label: English, type: text }
+
+  - name: contact
+    label: Contact
+    type: file
+    path: src/content/contact.json
+    format: json
+    fields:
+      - { name: email, label: Email, type: string }
+      - name: office
+        label: Office
+        type: object
+        fields:
+          - { name: zh, label: 中文, type: string }
+          - { name: en, label: English, type: string }
+      - name: address
+        label: Address
+        type: object
+        fields:
+          - { name: zh, label: 中文, type: string }
+          - { name: en, label: English, type: string }
+      - name: note
+        label: Note
+        type: object
+        fields:
+          - { name: zh, label: 中文, type: text }
+          - { name: en, label: English, type: text }

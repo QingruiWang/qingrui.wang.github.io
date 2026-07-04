@@ -1,0 +1,47 @@
+[
+  {
+    "id": "energy-ai",
+    "theme": {
+      "zh": "智能能源系统",
+      "en": "Intelligent Energy Systems"
+    },
+    "summary": {
+      "zh": "结合机理模型、优化算法和机器学习，研究综合能源系统、清洁能源消纳、需求响应与低碳调度。",
+      "en": "Combining physical models, optimization and machine learning for integrated energy systems, renewable integration, demand response and low-carbon dispatch."
+    },
+    "keywords": {
+      "zh": ["综合能源", "低碳调度", "需求响应"],
+      "en": ["Integrated energy", "Low-carbon dispatch", "Demand response"]
+    }
+  },
+  {
+    "id": "environment-sensing",
+    "theme": {
+      "zh": "环境数据智能",
+      "en": "Environmental Data Intelligence"
+    },
+    "summary": {
+      "zh": "利用多源环境监测、遥感和城市运行数据，开展污染暴露、空气质量、碳排放和生态环境风险分析。",
+      "en": "Using multi-source monitoring, remote sensing and urban data to analyze pollution exposure, air quality, carbon emissions and environmental risk."
+    },
+    "keywords": {
+      "zh": ["环境监测", "时空建模", "碳排放"],
+      "en": ["Environmental sensing", "Spatiotemporal modeling", "Carbon emissions"]
+    }
+  },
+  {
+    "id": "trustworthy-ai",
+    "theme": {
+      "zh": "可信与可解释AI",
+      "en": "Trustworthy and Explainable AI"
+    },
+    "summary": {
+      "zh": "面向能源环境应用中的不确定性、可解释性和泛化问题，构建物理约束、因果启发和人机协同的AI方法。",
+      "en": "Developing physics-aware, causality-inspired and human-in-the-loop AI methods for uncertainty, interpretability and generalization in energy and environmental applications."
+    },
+    "keywords": {
+      "zh": ["可解释AI", "物理约束学习", "不确定性"],
+      "en": ["Explainable AI", "Physics-aware learning", "Uncertainty"]
+    }
+  }
+]

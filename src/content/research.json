@@ -1,47 +1,32 @@
 [
   {
-    "id": "energy-ai",
+    "id": "renewable-identification",
     "theme": {
-      "zh": "智能能源系统",
-      "en": "Intelligent Energy Systems"
+      "zh": "可再生能源基础设施遥感识别",
+      "en": "Remote sensing identification of renewable energy infrastructure"
     },
     "summary": {
-      "zh": "结合机理模型、优化算法和机器学习，研究综合能源系统、清洁能源消纳、需求响应与低碳调度。",
-      "en": "Combining physical models, optimization and machine learning for integrated energy systems, renewable integration, demand response and low-carbon dispatch."
+      "zh": "利用遥感与人工智能技术识别可再生能源基础设施，如光伏电站。",
+      "en": "Utilize remote sensing and artificial intelligence technologies to identify renewable energy infrastructure, such as photovoltaic power plants."
     },
     "keywords": {
-      "zh": ["综合能源", "低碳调度", "需求响应"],
-      "en": ["Integrated energy", "Low-carbon dispatch", "Demand response"]
+      "zh": "遥感; 人工智能; 可再生能源基础设施",
+      "en": "Remote sensing; AI; Renewable energy infrastructure"
     }
   },
   {
-    "id": "environment-sensing",
+    "id": "renewable-resource",
     "theme": {
-      "zh": "环境数据智能",
-      "en": "Environmental Data Intelligence"
+      "zh": "可再生资源评估",
+      "en": "Renewable resource assessment"
     },
     "summary": {
-      "zh": "利用多源环境监测、遥感和城市运行数据，开展污染暴露、空气质量、碳排放和生态环境风险分析。",
-      "en": "Using multi-source monitoring, remote sensing and urban data to analyze pollution exposure, air quality, carbon emissions and environmental risk."
+      "zh": "评估可再生资源的潜力及不确定性",
+      "en": "Assessing the potential and uncertainties of renewable resources"
     },
     "keywords": {
-      "zh": ["环境监测", "时空建模", "碳排放"],
-      "en": ["Environmental sensing", "Spatiotemporal modeling", "Carbon emissions"]
-    }
-  },
-  {
-    "id": "trustworthy-ai",
-    "theme": {
-      "zh": "可信与可解释AI",
-      "en": "Trustworthy and Explainable AI"
-    },
-    "summary": {
-      "zh": "面向能源环境应用中的不确定性、可解释性和泛化问题，构建物理约束、因果启发和人机协同的AI方法。",
-      "en": "Developing physics-aware, causality-inspired and human-in-the-loop AI methods for uncertainty, interpretability and generalization in energy and environmental applications."
-    },
-    "keywords": {
-      "zh": ["可解释AI", "物理约束学习", "不确定性"],
-      "en": ["Explainable AI", "Physics-aware learning", "Uncertainty"]
+      "zh": "可再生资源; 不确定性",
+      "en": "Renewable resources; Uncertainty"
     }
   }
 ]

@@ -55,11 +55,15 @@ content:
         label: Biography
         type: object
         fields:
-          - { name: zh, label: 中文段落, type: list, field: { type: text } }
-          - { name: en, label: English paragraphs, type: list, field: { type: text } }
+          - { name: zh, label: 中文段落, type: text, list: true }
+          - { name: en, label: English paragraphs, type: text, list: true }
       - name: links
         label: Academic links
-        type: list
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{label}"
         fields:
           - { name: label, label: Label, type: string }
           - { name: url, label: URL, type: string }
@@ -88,8 +92,8 @@ content:
         label: Keywords
         type: object
         fields:
-          - { name: zh, label: 中文关键词, type: list, field: { type: string } }
-          - { name: en, label: English keywords, type: list, field: { type: string } }
+          - { name: zh, label: 中文关键词, type: string, list: true }
+          - { name: en, label: English keywords, type: string, list: true }
 
   - name: publications
     label: Publications
@@ -106,7 +110,7 @@ content:
         fields:
           - { name: zh, label: 中文, type: string }
           - { name: en, label: English, type: string }
-      - { name: topicIds, label: Research topic IDs, type: list, field: { type: string } }
+      - { name: topicIds, label: Research topic IDs, type: string, list: true }
       - name: title
         label: Title
         type: object
@@ -137,8 +141,8 @@ content:
         label: Keywords
         type: object
         fields:
-          - { name: zh, label: 中文关键词, type: list, field: { type: string } }
-          - { name: en, label: English keywords, type: list, field: { type: string } }
+          - { name: zh, label: 中文关键词, type: string, list: true }
+          - { name: en, label: English keywords, type: string, list: true }
       - { name: featured, label: Featured, type: boolean }
 
   - name: projects
@@ -182,7 +186,11 @@ content:
     fields:
       - name: courses
         label: Courses
-        type: list
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{term} · {fields.title.zh}"
         fields:
           - { name: term, label: Term, type: string }
           - name: title

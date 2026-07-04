@@ -60,10 +60,7 @@ content:
       - name: links
         label: Academic links
         type: object
-        list:
-          collapsible:
-            collapsed: true
-            summary: "{label}"
+        list: true
         fields:
           - { name: label, label: Label, type: string }
           - { name: url, label: URL, type: string }
@@ -187,10 +184,7 @@ content:
       - name: courses
         label: Courses
         type: object
-        list:
-          collapsible:
-            collapsed: true
-            summary: "{term} · {fields.title.zh}"
+        list: true
         fields:
           - { name: term, label: Term, type: string }
           - name: title

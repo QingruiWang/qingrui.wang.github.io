@@ -1,15 +1,11 @@
 {
+  "email": "wangqr@hust.edu.cn",
   "office": {
-    "zh": "某某大学 某某楼 000 室",
-    "en": "Room 000, Example Building, Example University"
+    "zh": "华中科技大学",
+    "en": "Huazhong University of Science and Technology"
   },
-  "email": "your.name@university.edu",
   "address": {
-    "zh": "中国 某某市 某某区 某某路",
-    "en": "Example Road, Example District, Example City, China"
-  },
-  "note": {
-    "zh": "如需学术合作、学生培养或媒体采访，请通过邮件联系，并注明来意。",
-    "en": "For academic collaboration, student supervision or media inquiries, please contact me by email with a brief description of your request."
+    "zh": "湖北省武汉市洪山区珞喻路1037号",
+    "en": "Luoyu Road 1037, Wuhan, China"
   }
 }
